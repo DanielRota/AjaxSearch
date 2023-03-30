@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>IT Company</title>
+</head>
+
+<body>
+    <div style="padding: 30px;">
+        <div class="col-md-6 text-nowrap">
+            <form method="POST" id="form-filter">
+                <input id="filter" class="form-control" style="width: 100px;" placeholder="Code" />
+            </form><br>
+            <table class="table table-striped">
+                <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Category</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    function fetch_data() {
+        $.ajax({
+            url: 'action.php',
+            data: { action: 'fetch_all' },
+            success: function (data) {
+                $('tbody').html(data);
+            }
+        });
+
+        /*fetch('action.php', {
+            method: 'POST',
+            body: new URLSearchParams({
+                'action': 'fetch_all'
+            })
+        }).then(function (response) {
+            return response.text();
+        }).then(function (data) {
+            $('tbody').html(data);
+        }).catch(function (error) {
+            console.error(error);
+        });*/
+    }
+
+    document.addEventListener('DOMContentLoaded', fetch_data());
+
+    $(document).ready(function () {
+
+        fetch_data();
+
+        $('#filter').on('input', function () {
+            var text = document.getElementById('filter').value
+            $.ajax({
+                url: 'action.php',
+                data: { id: text, action: 'fetch_single' },
+                success: function (data) {
+                    $('tbody').html(data);
+                }
+            });
+
+            /*fetch('action.php', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'id': text,
+                    'action': 'fetch_single'
+                })
+            }).then(function (response) {
+                return response.text();
+            }).then(function (data) {
+                $('tbody').html(data);
+            }).catch(function (error) {
+                console.error(error);
+            });*/
+        });
+    });
+</script>
+
+</html>
